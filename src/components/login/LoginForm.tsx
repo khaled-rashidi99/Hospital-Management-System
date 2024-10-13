@@ -28,7 +28,7 @@ export default function LoginForm() {
     } else {
       console.log("Login attempt:", formData);
       setError(null);
-      // You would typically make an API call here to authenticate the user
+      // API call here to authenticate the user
     }
   };
 

@@ -1,8 +1,16 @@
-import { Box, Typography, Avatar } from "@mui/material";
+import { useState } from "react";
+import { Box, Typography, Avatar, Button, Paper } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LoginForm from "../components/login/LoginForm";
+import RegisterForm from "../components/login/RegisterForm";
 
 export default function LoginPage() {
+  const [isLogin, setIsLogin] = useState(true);
+
+  const toggleForm = () => {
+    setIsLogin(!isLogin);
+  };
+
   return (
     <Box
       sx={{
@@ -12,9 +20,11 @@ export default function LoginPage() {
         alignItems: "center",
         minHeight: "100vh",
         width: "100%",
+        bgcolor: "background.default",
       }}
     >
-      <Box
+      <Paper
+        elevation={3}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -22,19 +32,22 @@ export default function LoginPage() {
           maxWidth: "400px",
           width: "100%",
           p: 3,
-          boxShadow: 3,
           borderRadius: 2,
-          bgcolor: "background.paper",
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          iHMS App Login
+        <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
+          {isLogin ? "iHMS App Login" : "iHMS App Register"}
         </Typography>
-        <LoginForm />
-      </Box>
+        {isLogin ? <LoginForm /> : <RegisterForm />}
+        <Button onClick={toggleForm} variant="text" sx={{ mt: 2 }}>
+          {isLogin
+            ? "Don't have an account? Sign Up"
+            : "Already have an account? Sign In"}
+        </Button>
+      </Paper>
     </Box>
   );
 }
