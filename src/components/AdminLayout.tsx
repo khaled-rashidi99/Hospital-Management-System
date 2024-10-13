@@ -1,7 +1,7 @@
 import HomeIcon from "@mui/icons-material/Home";
 import MenuIcon from "@mui/icons-material/Menu";
-
 import ApartmentIcon from "@mui/icons-material/Apartment";
+import BedroomChildIcon from "@mui/icons-material/BedroomChild";
 import {
   Toolbar,
   Divider,
@@ -20,7 +20,7 @@ import {
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 export default function AdminLayout({
   title,
@@ -35,6 +35,11 @@ export default function AdminLayout({
       title: "Department Management",
       icon: <ApartmentIcon />,
       route: "/department",
+    },
+    {
+      title: "Room Management",
+      icon: <BedroomChildIcon />,
+      route: "/rooms",
     },
   ];
   const [mobileOpen, setMobileOpen] = React.useState(false);
