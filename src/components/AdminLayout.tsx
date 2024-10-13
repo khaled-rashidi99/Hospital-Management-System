@@ -1,5 +1,7 @@
 import HomeIcon from "@mui/icons-material/Home";
 import MenuIcon from "@mui/icons-material/Menu";
+
+import ApartmentIcon from "@mui/icons-material/Apartment";
 import {
   Toolbar,
   Divider,
@@ -29,6 +31,11 @@ export default function AdminLayout({
 }) {
   const navigationList = [
     { title: "Dashboard", icon: <HomeIcon />, route: "/" },
+    {
+      title: "Department Management",
+      icon: <ApartmentIcon />,
+      route: "/department",
+    },
   ];
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);

@@ -3,6 +3,7 @@ import DashboardPage from "./pages/DashboardPage";
 import Layout from "./components/Layout";
 import LoginPage from "./pages/LoginPage";
 import AdminLayout from "./components/AdminLayout";
+import DepartmentPage from "./pages/DepartmentManagementPage";
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +16,16 @@ export const router = createBrowserRouter([
           </AdminLayout>
         </Layout>
       </>
+    ),
+  },
+  {
+    path: "/department",
+    element: (
+      <Layout>
+        <AdminLayout title="Department Management">
+          <DepartmentPage />
+        </AdminLayout>
+      </Layout>
     ),
   },
   {

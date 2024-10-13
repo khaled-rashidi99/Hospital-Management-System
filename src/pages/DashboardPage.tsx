@@ -1,3 +1,3 @@
 export default function DashboardPage() {
-  return <>uygifuy</>;
+  return <>Dashboard page content</>;
 }
