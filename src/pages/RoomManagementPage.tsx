@@ -86,7 +86,7 @@ const RoomManagementPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, margin: "auto", p: 2 }}>
+    <Box sx={{ maxWidth: 800, p: 2 }}>
       <Box sx={{ display: "flex", mb: 2 }}>
         <TextField
           label="New Room Number"

@@ -2,6 +2,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import MenuIcon from "@mui/icons-material/Menu";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import BedroomChildIcon from "@mui/icons-material/BedroomChild";
+import BadgeIcon from "@mui/icons-material/Badge";
 import {
   Toolbar,
   Divider,
@@ -40,6 +41,11 @@ export default function AdminLayout({
       title: "Room Management",
       icon: <BedroomChildIcon />,
       route: "/rooms",
+    },
+    {
+      title: "Doctor Management",
+      icon: <BadgeIcon />,
+      route: "/doctors",
     },
   ];
   const [mobileOpen, setMobileOpen] = React.useState(false);

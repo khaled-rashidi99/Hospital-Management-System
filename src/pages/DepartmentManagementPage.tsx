@@ -74,7 +74,7 @@ const DepartmentPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, margin: "auto", p: 2 }}>
+    <Box sx={{ maxWidth: 600, p: 2 }}>
       <Typography variant="h4" gutterBottom>
         Hospital Departments
       </Typography>
