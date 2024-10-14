@@ -54,7 +54,7 @@ const DoctorManagementPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, p: 2 }}>
+    <Box sx={{ p: 2 }}>
       <Tabs value={tabValue} onChange={handleTabChange} sx={{ mb: 2 }}>
         <Tab label="Doctors" />
         <Tab label="Schedules" />

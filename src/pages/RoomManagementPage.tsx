@@ -86,16 +86,21 @@ const RoomManagementPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, p: 2 }}>
-      <Box sx={{ display: "flex", mb: 2 }}>
+    <Box sx={{ p: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
         <TextField
           label="New Room Number"
           variant="outlined"
           value={newRoomNumber}
           onChange={(e) => setNewRoomNumber(e.target.value)}
-          sx={{ mr: 1 }}
+          fullWidth
+          sx={{ mr: 1, maxWidth: "300px" }}
         />
-        <Button variant="contained" onClick={handleAddRoom}>
+        <Button
+          variant="contained"
+          onClick={handleAddRoom}
+          sx={{ width: "15%" }}
+        >
           Add Room
         </Button>
       </Box>

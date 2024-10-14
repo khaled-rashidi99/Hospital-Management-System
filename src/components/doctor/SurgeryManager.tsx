@@ -8,7 +8,16 @@ import {
   FormControl,
   InputLabel,
   Typography,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 interface Doctor {
   id: number;
@@ -29,6 +38,11 @@ interface SurgeryManagerProps {
   surgeries: Surgery[];
   onAddSurgery: (surgery: Omit<Surgery, "id">) => void;
 }
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  margin: theme.spacing(2, 0),
+}));
 
 const SurgeryManager: React.FC<SurgeryManagerProps> = ({
   doctors,
@@ -58,72 +72,119 @@ const SurgeryManager: React.FC<SurgeryManagerProps> = ({
       setDuration("");
     }
   };
-
+  const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Math.max(0, Number(e.target.value));
+    setDuration(value.toString());
+  };
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
-        Schedule Surgery
-      </Typography>
-      <Box component="form" onSubmit={handleSubmit} sx={{ mb: 2 }}>
-        <FormControl sx={{ mr: 1, minWidth: 120 }}>
-          <InputLabel>Doctor</InputLabel>
-          <Select
-            value={doctorId}
-            onChange={(e) => setDoctorId(e.target.value as string)}
-          >
-            {doctors.map((doctor) => (
-              <MenuItem key={doctor.id} value={doctor.id}>
-                {doctor.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <TextField
-          label="Patient Name"
-          value={patientName}
-          onChange={(e) => setPatientName(e.target.value)}
-          sx={{ mr: 1 }}
-        />
-        <TextField
-          label="Date"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          sx={{ mr: 1 }}
-          InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-          label="Time"
-          type="time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-          sx={{ mr: 1 }}
-          InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-          label="Duration (minutes)"
-          type="number"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
-          sx={{ mr: 1 }}
-        />
-        <Button type="submit" variant="contained">
+      <StyledPaper elevation={3}>
+        <Typography variant="h5" gutterBottom>
           Schedule Surgery
-        </Button>
-      </Box>
-
-      <Typography variant="h6" gutterBottom>
-        Scheduled Surgeries
-      </Typography>
-      {surgeries.map((surgery) => (
-        <Box key={surgery.id} sx={{ mb: 1 }}>
-          <Typography>
-            {doctors.find((d) => d.id === surgery.doctorId)?.name} -{" "}
-            {surgery.patientName}({surgery.date} at {surgery.time},{" "}
-            {surgery.duration} minutes)
-          </Typography>
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} sm={6} md={4}>
+              <FormControl fullWidth>
+                <InputLabel>Doctor</InputLabel>
+                <Select
+                  value={doctorId}
+                  onChange={(e) => setDoctorId(e.target.value as string)}
+                  label="Doctor"
+                >
+                  {doctors.map((doctor) => (
+                    <MenuItem key={doctor.id} value={doctor.id}>
+                      {doctor.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <TextField
+                fullWidth
+                label="Patient Name"
+                value={patientName}
+                onChange={(e) => setPatientName(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <TextField
+                fullWidth
+                label="Date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <TextField
+                fullWidth
+                label="Time"
+                type="time"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <TextField
+                fullWidth
+                label="Duration (minutes)"
+                type="number"
+                value={duration}
+                onChange={handleDurationChange}
+                inputProps={{ min: "1" }}
+                error={Number(duration) < 0}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Button type="submit" variant="contained" fullWidth>
+                Schedule Surgery
+              </Button>
+            </Grid>
+          </Grid>
         </Box>
-      ))}
+      </StyledPaper>
+
+      <StyledPaper elevation={3}>
+        <Typography variant="h5" gutterBottom>
+          Scheduled Surgeries
+        </Typography>
+        {surgeries.length === 0 ? (
+          <Typography variant="body1" color="text.secondary">
+            No surgeries scheduled yet.
+          </Typography>
+        ) : (
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Doctor</TableCell>
+                  <TableCell>Patient</TableCell>
+                  <TableCell>Date</TableCell>
+                  <TableCell>Time</TableCell>
+                  <TableCell>Duration</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {surgeries.map((surgery) => (
+                  <TableRow key={surgery.id}>
+                    <TableCell>
+                      {doctors.find((d) => d.id === surgery.doctorId)?.name}
+                    </TableCell>
+                    <TableCell>{surgery.patientName}</TableCell>
+                    <TableCell>{surgery.date}</TableCell>
+                    <TableCell>{surgery.time}</TableCell>
+                    <TableCell>{surgery.duration} minutes</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </StyledPaper>
     </Box>
   );
 };

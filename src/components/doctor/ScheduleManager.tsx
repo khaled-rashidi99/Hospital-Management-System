@@ -8,7 +8,16 @@ import {
   FormControl,
   InputLabel,
   Typography,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 interface Doctor {
   id: number;
@@ -28,6 +37,21 @@ interface ScheduleManagerProps {
   shifts: Shift[];
   onAddShift: (shift: Omit<Shift, "id">) => void;
 }
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  margin: theme.spacing(2, 0),
+}));
+
+const days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 const ScheduleManager: React.FC<ScheduleManagerProps> = ({
   doctors,
@@ -52,61 +76,102 @@ const ScheduleManager: React.FC<ScheduleManagerProps> = ({
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
-        Add Shift
-      </Typography>
-      <Box component="form" onSubmit={handleSubmit} sx={{ mb: 2 }}>
-        <FormControl sx={{ mr: 1, minWidth: 120 }}>
-          <InputLabel>Doctor</InputLabel>
-          <Select
-            value={doctorId}
-            onChange={(e) => setDoctorId(e.target.value as string)}
-          >
-            {doctors.map((doctor) => (
-              <MenuItem key={doctor.id} value={doctor.id}>
-                {doctor.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <TextField
-          label="Day"
-          value={day}
-          onChange={(e) => setDay(e.target.value)}
-          sx={{ mr: 1 }}
-        />
-        <TextField
-          label="Start Time"
-          type="time"
-          value={startTime}
-          onChange={(e) => setStartTime(e.target.value)}
-          sx={{ mr: 1 }}
-          InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-          label="End Time"
-          type="time"
-          value={endTime}
-          onChange={(e) => setEndTime(e.target.value)}
-          sx={{ mr: 1 }}
-          InputLabelProps={{ shrink: true }}
-        />
-        <Button type="submit" variant="contained">
+      <StyledPaper elevation={3}>
+        <Typography variant="h5" gutterBottom>
           Add Shift
-        </Button>
-      </Box>
-
-      <Typography variant="h6" gutterBottom>
-        Current Shifts
-      </Typography>
-      {shifts.map((shift) => (
-        <Box key={shift.id} sx={{ mb: 1 }}>
-          <Typography>
-            {doctors.find((d) => d.id === shift.doctorId)?.name} - {shift.day} (
-            {shift.startTime} - {shift.endTime})
-          </Typography>
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} sm={6} md={3}>
+              <FormControl fullWidth>
+                <InputLabel>Doctor</InputLabel>
+                <Select
+                  value={doctorId}
+                  onChange={(e) => setDoctorId(e.target.value as string)}
+                  label="Doctor"
+                >
+                  {doctors.map((doctor) => (
+                    <MenuItem key={doctor.id} value={doctor.id}>
+                      {doctor.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <FormControl fullWidth>
+                <InputLabel>Day</InputLabel>
+                <Select
+                  value={day}
+                  onChange={(e) => setDay(e.target.value)}
+                  label="Day"
+                >
+                  {days.map((d) => (
+                    <MenuItem key={d} value={d}>
+                      {d}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <TextField
+                fullWidth
+                label="Start Time"
+                type="time"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+              <TextField
+                fullWidth
+                label="End Time"
+                type="time"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid item xs={12} md={2}>
+              <Button type="submit" variant="contained" fullWidth>
+                Add Shift
+              </Button>
+            </Grid>
+          </Grid>
         </Box>
-      ))}
+      </StyledPaper>
+
+      <StyledPaper elevation={3}>
+        <Typography variant="h5" gutterBottom>
+          Current Shifts
+        </Typography>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Doctor</TableCell>
+                <TableCell>Day</TableCell>
+                <TableCell>Start Time</TableCell>
+                <TableCell>End Time</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {shifts.map((shift) => (
+                <TableRow key={shift.id}>
+                  <TableCell>
+                    {doctors.find((d) => d.id === shift.doctorId)?.name}
+                  </TableCell>
+                  <TableCell>{shift.day}</TableCell>
+                  <TableCell>{shift.startTime}</TableCell>
+                  <TableCell>{shift.endTime}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </StyledPaper>
     </Box>
   );
 };

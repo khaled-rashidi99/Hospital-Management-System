@@ -19,12 +19,22 @@ const DoctorForm: React.FC<DoctorFormProps> = ({ onAddDoctor }) => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ mb: 2 }}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        mb: 2,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <TextField
+        fullWidth
         label="Doctor Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        sx={{ mr: 1 }}
+        sx={{ mr: 1, maxWidth: "300px" }}
       />
       <TextField
         label="Specialty"

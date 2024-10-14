@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Box,
-  Typography,
   TextField,
   Button,
   List,
@@ -74,24 +73,21 @@ const DepartmentPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, p: 2 }}>
-      <Typography variant="h4" gutterBottom>
-        Hospital Departments
-      </Typography>
-
+    <Box sx={{ p: 2 }}>
       <Box sx={{ display: "flex", mb: 2 }}>
         <TextField
           label="New Department Name"
           variant="outlined"
           value={newDepartmentName}
-          onChange={(e) => setNewDepartmentName(e.target.value)}
           fullWidth
-          sx={{ mr: 1 }}
+          onChange={(e) => setNewDepartmentName(e.target.value)}
+          sx={{ mr: 1, maxWidth: "900px" }}
         />
         <Button
           variant="contained"
           onClick={handleAddDepartment}
           startIcon={<AddIcon />}
+          sx={{ width: "15%" }}
         >
           Add
         </Button>
