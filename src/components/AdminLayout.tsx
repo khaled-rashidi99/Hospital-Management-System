@@ -4,6 +4,7 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import BedroomChildIcon from "@mui/icons-material/BedroomChild";
 import BadgeIcon from "@mui/icons-material/Badge";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import {
   Toolbar,
   Divider,
@@ -22,7 +23,7 @@ import {
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const drawerWidth = 280;
+const drawerWidth = 320;
 
 export default function AdminLayout({
   title,
@@ -52,6 +53,11 @@ export default function AdminLayout({
       title: "Services Management",
       icon: <MedicalServicesIcon />,
       route: "/services",
+    },
+    {
+      title: "Patient Admission Management",
+      icon: <ContactEmergencyIcon />,
+      route: "/patients",
     },
   ];
   const [mobileOpen, setMobileOpen] = React.useState(false);

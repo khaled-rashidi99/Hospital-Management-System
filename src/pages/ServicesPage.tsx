@@ -21,6 +21,8 @@ import {
   Container,
   useTheme,
   useMediaQuery,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
@@ -31,6 +33,12 @@ interface Service {
   name: string;
   category: "imaging" | "laboratory" | "intervention";
   description: string;
+}
+
+interface SnackbarState {
+  open: boolean;
+  message: string;
+  severity: "success" | "error" | "info" | "warning";
 }
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -56,6 +64,11 @@ const ServicesPage: React.FC = () => {
     category: "imaging",
     description: "",
   });
+  const [snackbar, setSnackbar] = useState<SnackbarState>({
+    open: false,
+    message: "",
+    severity: "info",
+  });
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -80,11 +93,37 @@ const ServicesPage: React.FC = () => {
     if (newService.name && newService.category) {
       setServices((prev) => [...prev, { ...newService, id: Date.now() }]);
       setNewService({ name: "", category: "imaging", description: "" });
+      setSnackbar({
+        open: true,
+        message: "Service added successfully",
+        severity: "success",
+      });
+    } else {
+      setSnackbar({
+        open: true,
+        message: "Please fill in all required fields",
+        severity: "error",
+      });
     }
   };
 
   const handleDeleteService = (id: number) => {
     setServices((prev) => prev.filter((service) => service.id !== id));
+    setSnackbar({
+      open: true,
+      message: "Service deleted successfully",
+      severity: "success",
+    });
+  };
+
+  const handleCloseSnackbar = (
+    _?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbar({ ...snackbar, open: false });
   };
 
   const categoryLabels = {
@@ -220,6 +259,21 @@ const ServicesPage: React.FC = () => {
           })
         )}
       </StyledPaper>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

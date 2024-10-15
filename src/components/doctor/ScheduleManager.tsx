@@ -16,6 +16,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
@@ -63,6 +65,11 @@ const ScheduleManager: React.FC<ScheduleManagerProps> = ({
   const [day, setDay] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success" as "success" | "error" | "info" | "warning",
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +79,28 @@ const ScheduleManager: React.FC<ScheduleManagerProps> = ({
       setDay("");
       setStartTime("");
       setEndTime("");
+      setSnackbar({
+        open: true,
+        message: "Shift added successfully!",
+        severity: "success",
+      });
+    } else {
+      setSnackbar({
+        open: true,
+        message: "Please fill in all fields.",
+        severity: "error",
+      });
     }
+  };
+
+  const handleCloseSnackbar = (
+    _?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbar({ ...snackbar, open: false });
   };
 
   return (
@@ -178,6 +206,21 @@ const ScheduleManager: React.FC<ScheduleManagerProps> = ({
           </Table>
         </TableContainer>
       </StyledPaper>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

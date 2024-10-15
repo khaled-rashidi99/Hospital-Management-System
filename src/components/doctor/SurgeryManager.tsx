@@ -16,6 +16,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -54,6 +56,11 @@ const SurgeryManager: React.FC<SurgeryManagerProps> = ({
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [duration, setDuration] = useState("");
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success" as "success" | "error" | "info" | "warning",
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,12 +77,35 @@ const SurgeryManager: React.FC<SurgeryManagerProps> = ({
       setDate("");
       setTime("");
       setDuration("");
+      setSnackbar({
+        open: true,
+        message: "Surgery scheduled successfully!",
+        severity: "success",
+      });
+    } else {
+      setSnackbar({
+        open: true,
+        message: "Please fill in all fields.",
+        severity: "error",
+      });
     }
   };
+
   const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(0, Number(e.target.value));
     setDuration(value.toString());
   };
+
+  const handleCloseSnackbar = (
+    _?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   return (
     <Box>
       <StyledPaper elevation={3}>
@@ -185,6 +215,21 @@ const SurgeryManager: React.FC<SurgeryManagerProps> = ({
           </TableContainer>
         )}
       </StyledPaper>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
