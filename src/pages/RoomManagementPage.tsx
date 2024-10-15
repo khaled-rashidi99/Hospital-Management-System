@@ -18,6 +18,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 interface Room {
   id: number;
@@ -99,7 +100,12 @@ const RoomManagementPage: React.FC = () => {
         <Button
           variant="contained"
           onClick={handleAddRoom}
-          sx={{ width: "15%" }}
+          startIcon={<AddIcon />}
+          sx={{
+            width: "fit-content",
+            height: "fit-content",
+            alignSelf: "center",
+          }}
         >
           Add Room
         </Button>

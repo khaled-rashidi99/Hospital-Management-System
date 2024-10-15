@@ -3,6 +3,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import BedroomChildIcon from "@mui/icons-material/BedroomChild";
 import BadgeIcon from "@mui/icons-material/Badge";
+import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import {
   Toolbar,
   Divider,
@@ -19,7 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const drawerWidth = 280;
 
@@ -47,10 +48,18 @@ export default function AdminLayout({
       icon: <BadgeIcon />,
       route: "/doctors",
     },
+    {
+      title: "Services Management",
+      icon: <MedicalServicesIcon />,
+      route: "/services",
+    },
   ];
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [selectedRoute, setSelectedRoute] = React.useState(location.pathname);
+
   const handleDrawerClose = () => {
     setIsClosing(true);
     setMobileOpen(false);
@@ -65,6 +74,15 @@ export default function AdminLayout({
       setMobileOpen(!mobileOpen);
     }
   };
+
+  const navigateTo = (route: string) => {
+    navigate(route);
+    setSelectedRoute(route);
+    if (mobileOpen) {
+      handleDrawerClose();
+    }
+  };
+
   const drawer = (
     <div>
       <Toolbar>
@@ -85,7 +103,18 @@ export default function AdminLayout({
       <List>
         {navigationList.map(({ title, icon, route }) => (
           <ListItem key={title} disablePadding>
-            <ListItemButton onClick={() => navigate(route)}>
+            <ListItemButton
+              onClick={() => navigateTo(route)}
+              selected={selectedRoute === route}
+              sx={{
+                "&.Mui-selected": {
+                  backgroundColor: "#e3f2fd",
+                  "&:hover": {
+                    backgroundColor: "#bbdefb",
+                  },
+                },
+              }}
+            >
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={title} />
             </ListItemButton>
@@ -94,6 +123,7 @@ export default function AdminLayout({
       </List>
     </div>
   );
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />

@@ -87,7 +87,11 @@ const DepartmentPage: React.FC = () => {
           variant="contained"
           onClick={handleAddDepartment}
           startIcon={<AddIcon />}
-          sx={{ width: "15%" }}
+          sx={{
+            width: "fit-content",
+            height: "fit-content",
+            alignSelf: "center",
+          }}
         >
           Add
         </Button>

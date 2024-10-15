@@ -6,6 +6,7 @@ import AdminLayout from "./components/AdminLayout";
 import DepartmentPage from "./pages/DepartmentManagementPage";
 import RoomManagementPage from "./pages/RoomManagementPage";
 import DoctorManagementPage from "./pages/DoctorManagementPage";
+import ServicesPage from "./pages/ServicesPage";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,16 @@ export const router = createBrowserRouter([
       <Layout>
         <AdminLayout title="Doctor Management">
           <DoctorManagementPage />
+        </AdminLayout>
+      </Layout>
+    ),
+  },
+  {
+    path: "/services",
+    element: (
+      <Layout>
+        <AdminLayout title="Services Management">
+          <ServicesPage />
         </AdminLayout>
       </Layout>
     ),

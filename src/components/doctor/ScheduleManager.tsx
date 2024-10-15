@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import AddIcon from "@mui/icons-material/Add";
 
 interface Doctor {
   id: number;
@@ -135,7 +136,12 @@ const ScheduleManager: React.FC<ScheduleManagerProps> = ({
               />
             </Grid>
             <Grid item xs={12} md={2}>
-              <Button type="submit" variant="contained" fullWidth>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                startIcon={<AddIcon />}
+              >
                 Add Shift
               </Button>
             </Grid>
