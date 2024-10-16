@@ -5,6 +5,7 @@ import BedroomChildIcon from "@mui/icons-material/BedroomChild";
 import BadgeIcon from "@mui/icons-material/Badge";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import {
   Toolbar,
   Divider,
@@ -58,6 +59,11 @@ export default function AdminLayout({
       title: "Patient Admission Management",
       icon: <ContactEmergencyIcon />,
       route: "/patients",
+    },
+    {
+      title: "Surgical Operation Management",
+      icon: <MonitorHeartIcon />,
+      route: "/surgicals",
     },
   ];
   const [mobileOpen, setMobileOpen] = React.useState(false);
