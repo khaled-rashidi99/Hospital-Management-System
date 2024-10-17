@@ -9,6 +9,7 @@ import DoctorManagementPage from "./pages/DoctorManagementPage";
 import ServicesPage from "./pages/ServicesPage";
 import PatientAdmissionPage from "./pages/PatientAdmissionPage";
 import SurgicalOperationPage from "./pages/SurgicalOperationPage";
+import RoomTrackingPage from "./pages/RoomTrackingPage";
 
 export const router = createBrowserRouter([
   {
@@ -79,6 +80,16 @@ export const router = createBrowserRouter([
       <Layout>
         <AdminLayout title="Surgical Operations Management">
           <SurgicalOperationPage />
+        </AdminLayout>
+      </Layout>
+    ),
+  },
+  {
+    path: "/roomstracking",
+    element: (
+      <Layout>
+        <AdminLayout title="Rooms Tracking">
+          <RoomTrackingPage />
         </AdminLayout>
       </Layout>
     ),
