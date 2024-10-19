@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { login } from "../../api/auth";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
 
 interface LoginFormData {
   username: string;
@@ -7,6 +10,7 @@ interface LoginFormData {
 }
 
 export default function LoginForm() {
+  const dispatch: AppDispatch = useDispatch();
   const [formData, setFormData] = useState<LoginFormData>({
     username: "",
     password: "",
@@ -21,15 +25,23 @@ export default function LoginForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.username || !formData.password) {
       setError("Please fill in all fields");
-    } else {
-      console.log("Login attempt:", formData);
-      setError(null);
-      // API call here to authenticate the user
+      return;
     }
+    console.log("Login attempt:", formData);
+    setError(null);
+    await login(
+      {
+        userName: formData.username,
+        password: formData.password,
+        passwordConfirmation: formData.password,
+      },
+      dispatch
+    );
+    alert("Logged in successfully!");
   };
 
   return (
