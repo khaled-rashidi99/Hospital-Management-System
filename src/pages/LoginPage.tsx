@@ -1,16 +1,8 @@
-import { useState } from "react";
-import { Box, Typography, Avatar, Button, Paper } from "@mui/material";
+import { Box, Typography, Avatar, Paper } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LoginForm from "../components/login/LoginForm";
-import RegisterForm from "../components/login/RegisterForm";
 
 export default function LoginPage() {
-  const [isLogin, setIsLogin] = useState(true);
-
-  const toggleForm = () => {
-    setIsLogin(!isLogin);
-  };
-
   return (
     <Box
       sx={{
@@ -39,14 +31,9 @@ export default function LoginPage() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
-          {isLogin ? "iHMS App Login" : "iHMS App Register"}
+          iHMS App Login
         </Typography>
-        {isLogin ? <LoginForm /> : <RegisterForm />}
-        <Button onClick={toggleForm} variant="text" sx={{ mt: 2 }}>
-          {isLogin
-            ? "Don't have an account? Sign Up"
-            : "Already have an account? Sign In"}
-        </Button>
+        <LoginForm />
       </Paper>
     </Box>
   );
