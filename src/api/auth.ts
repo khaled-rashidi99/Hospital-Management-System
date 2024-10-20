@@ -22,6 +22,7 @@ interface LoginCredentials {
   password: string;
   passwordConfirmation: string;
 }
+
 const login = async (
   credentials: LoginCredentials,
   dispatch: AppDispatch
@@ -43,9 +44,14 @@ const login = async (
 
     console.log("User logged in successfully:", data.user);
     console.log("Auth token:", data.token);
-  } catch (error) {
-    console.error("Error logging in:", error);
-    throw error;
+  } catch (error: any) {
+    console.error(
+      "Error logging in:",
+      error.response?.data?.message || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "An error occurred during login"
+    );
   }
 };
 

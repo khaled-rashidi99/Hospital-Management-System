@@ -3,6 +3,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { login } from "../../api/auth";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormData {
   username: string;
@@ -10,6 +11,7 @@ interface LoginFormData {
 }
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const [formData, setFormData] = useState<LoginFormData>({
     username: "",
@@ -33,15 +35,22 @@ export default function LoginForm() {
     }
     console.log("Login attempt:", formData);
     setError(null);
-    await login(
-      {
-        userName: formData.username,
-        password: formData.password,
-        passwordConfirmation: formData.password,
-      },
-      dispatch
-    );
-    alert("Logged in successfully!");
+    try {
+      await login(
+        {
+          userName: formData.username,
+          password: formData.password,
+          passwordConfirmation: formData.password,
+        },
+        dispatch
+      );
+      alert("Logged in successfully!");
+      setFormData({ username: "", password: "" });
+      navigate("/");
+    } catch (error) {
+      setError("Login failed. Please check your credentials and try again.");
+      setFormData({ username: "", password: "" });
+    }
   };
 
   return (
