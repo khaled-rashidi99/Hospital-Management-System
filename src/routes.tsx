@@ -10,6 +10,7 @@ import ServicesPage from "./pages/ServicesPage";
 import PatientAdmissionPage from "./pages/PatientAdmissionPage";
 import SurgicalOperationPage from "./pages/SurgicalOperationPage";
 import RoomTrackingPage from "./pages/RoomTrackingPage";
+import UserGuard from "./components/UserGuard";
 
 export const router = createBrowserRouter([
   {
@@ -98,7 +99,9 @@ export const router = createBrowserRouter([
     path: "/login",
     element: (
       <Layout>
-        <LoginPage />
+        <UserGuard>
+          <LoginPage />
+        </UserGuard>
       </Layout>
     ),
   },

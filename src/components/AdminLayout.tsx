@@ -1,12 +1,7 @@
-import HomeIcon from "@mui/icons-material/Home";
-import MenuIcon from "@mui/icons-material/Menu";
-import ApartmentIcon from "@mui/icons-material/Apartment";
-import BedroomChildIcon from "@mui/icons-material/BedroomChild";
-import BadgeIcon from "@mui/icons-material/Badge";
-import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
-import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
-import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
-import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearToken } from "../store/authSlice";
 import {
   Toolbar,
   Divider,
@@ -21,102 +16,102 @@ import {
   Drawer,
   IconButton,
   Typography,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home";
+import MenuIcon from "@mui/icons-material/Menu";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+import BedroomChildIcon from "@mui/icons-material/BedroomChild";
+import BadgeIcon from "@mui/icons-material/Badge";
+import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
+import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AuthGuard from "./AuthGuard";
 
-const drawerWidth = 320;
+const drawerWidth = 240;
 
-export default function AdminLayout({
-  title,
-  children,
-}: {
+const navigationList = [
+  { title: "Dashboard", icon: <HomeIcon />, route: "/" },
+  { title: "Departments", icon: <ApartmentIcon />, route: "/department" },
+  { title: "Rooms", icon: <BedroomChildIcon />, route: "/rooms" },
+  { title: "Doctors", icon: <BadgeIcon />, route: "/doctors" },
+  { title: "Services", icon: <MedicalServicesIcon />, route: "/services" },
+  { title: "Patients", icon: <ContactEmergencyIcon />, route: "/patients" },
+  { title: "Surgeries", icon: <MonitorHeartIcon />, route: "/surgicals" },
+  {
+    title: "Room Tracking",
+    icon: <LocationSearchingIcon />,
+    route: "/roomstracking",
+  },
+];
+
+interface AdminLayoutProps {
   title: string;
   children: React.ReactNode;
-}) {
-  const navigationList = [
-    { title: "Dashboard", icon: <HomeIcon />, route: "/" },
-    {
-      title: "Department Management",
-      icon: <ApartmentIcon />,
-      route: "/department",
-    },
-    {
-      title: "Room Management",
-      icon: <BedroomChildIcon />,
-      route: "/rooms",
-    },
-    {
-      title: "Doctor Management",
-      icon: <BadgeIcon />,
-      route: "/doctors",
-    },
-    {
-      title: "Services Management",
-      icon: <MedicalServicesIcon />,
-      route: "/services",
-    },
-    {
-      title: "Patient Admission Management",
-      icon: <ContactEmergencyIcon />,
-      route: "/patients",
-    },
-    {
-      title: "Surgical Operation Management",
-      icon: <MonitorHeartIcon />,
-      route: "/surgicals",
-    },
-    {
-      title: "Rooms Tracking",
-      icon: <LocationSearchingIcon />,
-      route: "/roomstracking",
-    },
-  ];
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
+}
+
+export default function AdminLayout({ title, children }: AdminLayoutProps) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedRoute, setSelectedRoute] = React.useState(location.pathname);
+  const dispatch = useDispatch();
+  const [selectedRoute, setSelectedRoute] = useState(location.pathname);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const handleDrawerClose = () => {
-    setIsClosing(true);
-    setMobileOpen(false);
-  };
-
-  const handleDrawerTransitionEnd = () => {
-    setIsClosing(false);
-  };
+  useEffect(() => {
+    setSelectedRoute(location.pathname);
+  }, [location.pathname]);
 
   const handleDrawerToggle = () => {
-    if (!isClosing) {
-      setMobileOpen(!mobileOpen);
-    }
+    setMobileOpen(!mobileOpen);
   };
 
   const navigateTo = (route: string) => {
     navigate(route);
     setSelectedRoute(route);
-    if (mobileOpen) {
-      handleDrawerClose();
+    if (isMobile) {
+      setMobileOpen(false);
     }
+  };
+
+  const handleLogoutClick = () => {
+    setLogoutDialogOpen(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    dispatch(clearToken());
+    navigate("/login");
+    setLogoutDialogOpen(false);
+  };
+
+  const handleLogoutCancel = () => {
+    setLogoutDialogOpen(false);
   };
 
   const drawer = (
     <div>
       <Toolbar>
-        <a href="#">
-          <img
-            src="/favicon.ico"
-            alt=""
-            style={{ width: 40, height: 40, padding: 4 }}
-          />
-        </a>
-        <h1 className="text-lg p-1">
-          <a href="#" className="text-[#64a3b4]">
+        <img
+          src="/favicon.ico"
+          alt="Logo"
+          style={{ width: 40, height: 40, marginRight: 8 }}
+        />
+        <a href="" className="text-[#64a3b4]">
+          <Typography variant="h6" noWrap component="div">
             iHMS App
-          </a>
-        </h1>
+          </Typography>
+        </a>
       </Toolbar>
       <Divider />
       <List>
@@ -127,10 +122,7 @@ export default function AdminLayout({
               selected={selectedRoute === route}
               sx={{
                 "&.Mui-selected": {
-                  backgroundColor: "#e3f2fd",
-                  "&:hover": {
-                    backgroundColor: "#bbdefb",
-                  },
+                  backgroundColor: theme.palette.action.selected,
                 },
               }}
             >
@@ -150,41 +142,50 @@ export default function AdminLayout({
         <AppBar
           position="fixed"
           sx={{
-            width: { md: `calc(100% - ${drawerWidth}px)` },
-            ml: { md: `${drawerWidth}px` },
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            ml: { sm: `${drawerWidth}px` },
           }}
         >
-          <Toolbar className="justify-between ">
-            <div className="flex items-center">
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { md: "none" } }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" noWrap component="div">
-                {title}
-              </Typography>
-            </div>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1 }}
+            >
+              {title}
+            </Typography>
+            <Button
+              color="inherit"
+              onClick={handleLogoutClick}
+              startIcon={<ExitToAppIcon />}
+            >
+              {isMobile ? "" : "Logout"}
+            </Button>
           </Toolbar>
         </AppBar>
         <Box
           component="nav"
-          sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         >
           <Drawer
             variant="temporary"
             open={mobileOpen}
-            onTransitionEnd={handleDrawerTransitionEnd}
-            onClose={handleDrawerClose}
+            onClose={handleDrawerToggle}
             ModalProps={{
-              keepMounted: true, // Better open performance on mobile
+              keepMounted: true,
             }}
             sx={{
-              display: { xs: "block", md: "none" },
+              display: { xs: "block", sm: "none" },
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
@@ -196,7 +197,7 @@ export default function AdminLayout({
           <Drawer
             variant="permanent"
             sx={{
-              display: { xs: "none", md: "block" },
+              display: { xs: "none", sm: "block" },
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
@@ -212,12 +213,33 @@ export default function AdminLayout({
           sx={{
             flexGrow: 1,
             p: 3,
-            width: { md: `calc(100% - ${drawerWidth}px)` },
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
           }}
         >
           <Toolbar />
           {children}
         </Box>
+        <Dialog
+          open={logoutDialogOpen}
+          onClose={handleLogoutCancel}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Confirm Logout"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to log out?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleLogoutCancel} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleLogoutConfirm} color="primary" autoFocus>
+              Logout
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </AuthGuard>
   );

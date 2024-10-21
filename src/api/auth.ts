@@ -42,7 +42,7 @@ const login = async (
     const { data } = response.data;
     dispatch(setToken(data.token));
 
-    console.log("User logged in successfully:", data.user);
+    console.log(response.data.message, data.user);
     console.log("Auth token:", data.token);
   } catch (error: any) {
     console.error(
