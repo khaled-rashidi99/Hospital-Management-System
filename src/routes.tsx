@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage";
-import Layout from "./components/Layout";
+import Layout from "./components/Layouts/Layout";
 import LoginPage from "./pages/LoginPage";
-import AdminLayout from "./components/AdminLayout";
+import AdminLayout from "./components/Layouts/AdminLayout";
 import DepartmentPage from "./pages/DepartmentManagementPage";
 import RoomManagementPage from "./pages/RoomManagementPage";
 import DoctorManagementPage from "./pages/DoctorManagementPage";
@@ -11,6 +11,7 @@ import PatientAdmissionPage from "./pages/PatientAdmissionPage";
 import SurgicalOperationPage from "./pages/SurgicalOperationPage";
 import RoomTrackingPage from "./pages/RoomTrackingPage";
 import UserGuard from "./components/UserGuard";
+import UserLayout from "./components/Layouts/UserLayout";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +77,16 @@ export const router = createBrowserRouter([
     ),
   },
   {
+    path: "/user/patients",
+    element: (
+      <Layout>
+        <UserLayout title="Patient Admission">
+          <PatientAdmissionPage />
+        </UserLayout>
+      </Layout>
+    ),
+  },
+  {
     path: "/surgicals",
     element: (
       <Layout>
@@ -86,12 +97,32 @@ export const router = createBrowserRouter([
     ),
   },
   {
+    path: "/user/surgicals",
+    element: (
+      <Layout>
+        <UserLayout title="Surgical Operations">
+          <SurgicalOperationPage />
+        </UserLayout>
+      </Layout>
+    ),
+  },
+  {
     path: "/roomstracking",
     element: (
       <Layout>
         <AdminLayout title="Rooms Tracking">
           <RoomTrackingPage />
         </AdminLayout>
+      </Layout>
+    ),
+  },
+  {
+    path: "/user/roomstracking",
+    element: (
+      <Layout>
+        <UserLayout title="Rooms Tracking">
+          <RoomTrackingPage />
+        </UserLayout>
       </Layout>
     ),
   },

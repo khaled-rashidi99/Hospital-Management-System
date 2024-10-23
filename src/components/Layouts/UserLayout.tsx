@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { clearToken } from "../store/authSlice";
+import { clearToken } from "../../store/authSlice";
 import {
   Toolbar,
   Divider,
@@ -25,41 +25,36 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
+
 import MenuIcon from "@mui/icons-material/Menu";
-import ApartmentIcon from "@mui/icons-material/Apartment";
-import BedroomChildIcon from "@mui/icons-material/BedroomChild";
-import BadgeIcon from "@mui/icons-material/Badge";
-import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import AuthGuard from "./AuthGuard";
+import AuthGuard from "../AuthGuard";
 
 const drawerWidth = 240;
 
 const navigationList = [
-  { title: "Dashboard", icon: <HomeIcon />, route: "/" },
-  { title: "Departments", icon: <ApartmentIcon />, route: "/department" },
-  { title: "Rooms", icon: <BedroomChildIcon />, route: "/rooms" },
-  { title: "Doctors", icon: <BadgeIcon />, route: "/doctors" },
-  { title: "Services", icon: <MedicalServicesIcon />, route: "/services" },
-  { title: "Patients", icon: <ContactEmergencyIcon />, route: "/patients" },
-  { title: "Surgeries", icon: <MonitorHeartIcon />, route: "/surgicals" },
+  {
+    title: "Patients",
+    icon: <ContactEmergencyIcon />,
+    route: "/user/patients",
+  },
+  { title: "Surgeries", icon: <MonitorHeartIcon />, route: "/user/surgicals" },
   {
     title: "Room Tracking",
     icon: <LocationSearchingIcon />,
-    route: "/roomstracking",
+    route: "/user/roomstracking",
   },
 ];
 
-interface AdminLayoutProps {
+interface UserLayoutProps {
   title: string;
   children: React.ReactNode;
 }
 
-export default function AdminLayout({ title, children }: AdminLayoutProps) {
+export default function UserLayout({ title, children }: UserLayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const navigate = useNavigate();

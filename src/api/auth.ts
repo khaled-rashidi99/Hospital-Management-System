@@ -23,7 +23,7 @@ interface LoginCredentials {
   passwordConfirmation: string;
 }
 
-const login = async (
+const adminlogin = async (
   credentials: LoginCredentials,
   dispatch: AppDispatch
 ): Promise<void> => {
@@ -54,5 +54,35 @@ const login = async (
     );
   }
 };
+const userlogin = async (
+  credentials: LoginCredentials,
+  dispatch: AppDispatch
+): Promise<void> => {
+  try {
+    const formData = new FormData();
+    formData.append("user_name", credentials.userName);
+    formData.append("password", credentials.password);
+    formData.append("password_confirmation", credentials.passwordConfirmation);
 
-export { login };
+    const response = await api.post<LoginResponse>("/userlogin", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    const { data } = response.data;
+    dispatch(setToken(data.token));
+    console.log(response.data.message, data.user);
+    console.log("Auth token:", data.token);
+  } catch (error: any) {
+    console.error(
+      "Error logging in:",
+      error.response?.data?.message || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "An error occurred during login"
+    );
+  }
+};
+
+export { adminlogin, userlogin };
