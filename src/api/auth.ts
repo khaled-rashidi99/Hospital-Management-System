@@ -33,7 +33,7 @@ const adminlogin = async (
     formData.append("password", credentials.password);
     formData.append("password_confirmation", credentials.passwordConfirmation);
 
-    const response = await api.post<LoginResponse>("/adminlogin", formData, {
+    const response = await api.post<LoginResponse>("/login", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -64,7 +64,7 @@ const userlogin = async (
     formData.append("password", credentials.password);
     formData.append("password_confirmation", credentials.passwordConfirmation);
 
-    const response = await api.post<LoginResponse>("/userlogin", formData, {
+    const response = await api.post<LoginResponse>("/login", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
